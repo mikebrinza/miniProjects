@@ -1,5 +1,5 @@
 #Simple Rock, Paper, Scissor's game
-#Plays 3 matches
+#Plays 3 matches  
 import random
 
 strOptions = ["rock", "paper", "scissors"]
