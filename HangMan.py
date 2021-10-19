@@ -3,11 +3,13 @@
 
 import random
 
-
-#wordCollection = ["person","linen","boundary","hill","substance","interest","wish","ducks"]
-wordCollection = [input("Type a word to be guessed the the other player: ")]
+wordCollection = []
+#import words from the wordCollection.txt file
+with open("wordCollection.txt", "r") as file:
+    for word in file:
+        stripWords = word.strip().replace("'","").strip(",")
+        wordCollection.append(stripWords)
 randomWord = wordCollection[random.randrange(0,len(wordCollection))]
-
 
 def main():
     hangMan(randomWord)
@@ -33,20 +35,24 @@ def gameOver(word):
     print("You ran out of guesses :(")
     print("The word to guess was: ", word)
     print("May you swing in peace!")
+    exit()
 
 #main game
 def hangMan(word :str):
     wrongGuesses = 0
-    rightGuesses = 0
     lettersUsed = []
     stages = ["_______ ", "|   | ", "|   0 ", "|  /|\ ", "|  / \ ", "| ", "|[^^^^^^^]"]
     board = ["_"] * len(word)
     wordList = list(word)
-    print("Let's play Hangman!")
     print("\n")
+    print("Let's play Hangman!")
 
     #loop of the game
     while wrongGuesses < len(stages):
+        #check to see if game is over
+        if "_" not in board:
+            gameWon(word)
+
         print("\n")
         #print the board (hidden word to guess)
         print("The word to guess is: ")
@@ -60,15 +66,12 @@ def hangMan(word :str):
 
             #if player guessed a letter correctly
             if (userLetter in wordList):
-                rightGuesses += 1
                 print("You guessed it!")
                 occurances = [index for index, element in enumerate(word) if element == userLetter]
                 for index in occurances:
                     board[index] = userLetter
             
-                #if all the letters were guessed, win logic
-                if rightGuesses == len(word):
-                    gameWon(word)
+                
 
             else:
                 print("You guessed wrong")
