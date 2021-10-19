@@ -4,7 +4,8 @@
 import random
 
 
-wordCollection = ["person","linen","boundary","hill","substance","interest","wish","ducks"]
+#wordCollection = ["person","linen","boundary","hill","substance","interest","wish","ducks"]
+wordCollection = [input("Type a word to be guessed the the other player: ")]
 randomWord = wordCollection[random.randrange(0,len(wordCollection))]
 
 
@@ -22,14 +23,15 @@ def userGuessLetter():
 
 #function if the game is won
 def gameWon(word):
-    print("Congratulations! You guessed right!")
+    print("Congratulations! You guessed the word!")
     print("The word to guess was: ", word)
     exit()
 
 #function if the game is lost
-def gameOver():
+def gameOver(word):
     print("Game Over!")
     print("You ran out of guesses :(")
+    print("The word to guess was: ", word)
     print("May you swing in peace!")
 
 #main game
@@ -37,7 +39,7 @@ def hangMan(word :str):
     wrongGuesses = 0
     rightGuesses = 0
     lettersUsed = []
-    stages = ["_______ ", "|  | ", "|  0 ", "|  /|\ ", "|  / \ ", "| ", "|[^^^^^^^]"]
+    stages = ["_______ ", "|   | ", "|   0 ", "|  /|\ ", "|  / \ ", "| ", "|[^^^^^^^]"]
     board = ["_"] * len(word)
     wordList = list(word)
     print("Let's play Hangman!")
@@ -59,28 +61,29 @@ def hangMan(word :str):
             #if player guessed a letter correctly
             if (userLetter in wordList):
                 rightGuesses += 1
-                print("You guessed right!")
+                print("You guessed it!")
                 occurances = [index for index, element in enumerate(word) if element == userLetter]
                 for index in occurances:
                     board[index] = userLetter
             
                 #if all the letters were guessed, win logic
-                if rightGuesses == len(word) - 1:
+                if rightGuesses == len(word):
                     gameWon(word)
 
             else:
+                print("You guessed wrong")
                 for stage in stages[0:wrongGuesses + 1]:
                     print(stage)
                 wrongGuesses += 1
         
         #if user already guessed the same letter
         else:
-            print("You already used that letter")
+            print("You already guessed that letter")
             print("Letters already guessed: ", lettersUsed)
         
     
     #logic if game lost
-    gameOver()
+    gameOver(word)
 
     
 
